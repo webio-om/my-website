@@ -1,0 +1,59 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Bank</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<h1>Blood Bank Data</h1>
+<img src="bloodbank.jpg" alt="Blood Bank" width="500" height="auto">
+<form id="form">
+    ID: <input type="text" id="id"><br>
+    Mobile No: <input type="text" id="mobile"><br>
+    Blood Group:
+    <select id="bloodGroup">
+      <option value="A+">A+</option>
+      <option value="A-">A-</option>
+      <option value="B+">B+</option>
+      <option value="B-">B-</option>
+      <option value="AB+">AB+</option>
+      <option value="AB-">AB-</option>
+      <option value="O+">O+</option>
+      <option value="O-">O-</option>
+    </select><br>
+    <input type="submit" value="Add">
+</form>
+<ul id="dataList"></ul>
+<script>
+    
+    var stored = localStorage.getItem("bloodData");
+    if (stored) {
+        var bloodArray = JSON.parse(stored);
+        var list = document.getElementById("dataList");
+        for (var i = 0; i < bloodArray.length; i++) {
+            var li = document.createElement("li");
+            li.textContent = "ID: " + bloodArray[i].id + ", Mobile: " + bloodArray[i].mobile + ", Group: " + bloodArray[i].bloodGroup;
+            list.appendChild(li);
+        }
+    } else {
+        var bloodArray = [];
+    }
+
+    document.getElementById("form").onsubmit = function () {
+        var id = document.getElementById("id").value;
+        var mobile = document.getElementById("mobile").value;
+        var bloodGroup = document.getElementById("bloodGroup").value;
+
+        var newRecord = { id: id, mobile: mobile, bloodGroup: bloodGroup };
+        bloodArray.push(newRecord);
+        localStorage.setItem("bloodData", JSON.stringify(bloodArray));
+        var li = document.createElement("li");
+        li.textContent = "ID: " + id + ", Mobile: " + mobile + ", Group: " + bloodGroup;
+        document.getElementById("dataList").appendChild(li);
+
+        
+        return false;
+    };
+</script>
+</body>
+</html>
